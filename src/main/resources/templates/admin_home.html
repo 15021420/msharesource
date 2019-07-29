@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Mshare  source</title>
+    <link rel="stylesheet" media="all" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" href="/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"/>
+    <link rel="stylesheet" media="all" type="text/css" th:href="@{/css/mdb.min.css}" href="/css/mdb.min.css"/>
+    <link rel="stylesheet" media="all" type="text/css" th:href="@{/css/side_nav_admin.css}" href="/css/side_nav_admin.css"/>
+    <link rel="stylesheet" media="all" type="text/css" th:href="@{/css/admin_home.css}" href="/css/admin_home.css"/>
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div th:replace="side_nav_admin :: copy"></div>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span>Menu</span>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item danger-color">
+                                <a class="nav-link" href="#">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="row">
+                <div class="card w-50">
+
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Config google drive credentials</strong>
+                    </h5>
+
+                    <div class="card-body px-xl-5 pt-5">
+
+                        <form method="post" class="was-validated">
+                            <div class="form-group">
+                                <label for="authCode">Authorization code</label>
+                                <input th:value="${currentCredentials == null? null : currentCredentials.getAuthorizationCode()}" type="text" class="form-control" id="authCode" placeholder="Enter authorization code" name="authCode" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="refreshToken">Refresh token:</label>
+                                <input th:value="${currentCredentials == null? null : currentCredentials.getRefreshToken()}" type="text" class="form-control" id="refreshToken" placeholder="Enter refresh token" name="refreshToken" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="refreshToken">Token:</label>
+                                <input th:value="${currentCredentials == null? null : currentCredentials.getToken()}" type="text" class="form-control" id="token" placeholder="Enter refresh token" name="token" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary text-center">Config setting</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="/jquery/jquery-3.4.1.min.js" th:src="@{/jquery/jquery-3.4.1.min.js}"></script>
+    <script src="/js/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+    <script src="/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script src="/js/mdb.min.js" th:src="@{/js/mdb.min.js}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+</body>
+</html>
