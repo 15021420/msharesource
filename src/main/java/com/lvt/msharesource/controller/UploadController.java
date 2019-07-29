@@ -44,7 +44,7 @@ public class UploadController {
         httpHeaders.add("Authorization",  credentials.getToken());
         httpHeaders.add("key", credentials.getKey());
 
-        HttpEntity<String> request = new HttpEntity<>("{\"uploadType\": \"resumable\"}", httpHeaders);
+        HttpEntity<String> request = new HttpEntity<>("{\"uploadType\": \"resumable\"," + "\"name\":\"" + dataCheckHashVM.getFileName() + "\"}", httpHeaders);
 
         ResponseEntity<String> result = rst.postForEntity(uri, request, String.class);
 

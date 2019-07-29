@@ -75,7 +75,6 @@
         function sendUploadServer(urlUpload, file) {
             $.ajax({
                 headers: {
-                    "Content-Range": "bytes 0-31370/31371",
                     "Content-Type": file.type,
                     "X-Upload-Content-Length": file.size,
                     "X-Upload-Content-Type": file.type
@@ -84,6 +83,9 @@
                 url: urlUpload,
                 data: file,
                 processData:false,
+                body: {
+                    "name": file.name
+                },
                 success: function (result) {
                     console.log(result);
                 },
