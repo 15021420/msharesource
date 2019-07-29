@@ -19,13 +19,16 @@ public class GoogleDriveCredentials implements Serializable {
     @Column
     private String token;
 
+    @Column
+    private String key;
+
     public GoogleDriveCredentials() {}
 
-    public GoogleDriveCredentials(int id, String authorizationCode, String refreshToken, String token) {
-        this.id = id;
+    public GoogleDriveCredentials(String authorizationCode, String refreshToken, String token, String key) {
         this.authorizationCode = authorizationCode;
         this.refreshToken = refreshToken;
         this.token = token;
+        this.key = key;
     }
 
     public int getId() {
@@ -58,5 +61,13 @@ public class GoogleDriveCredentials implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

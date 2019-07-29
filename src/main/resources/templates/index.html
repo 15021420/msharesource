@@ -50,12 +50,16 @@
         <!--/.Navbar -->
 
         <div class="row">
-            <form>
-                <input type="file" multiple>
+            <form id="form-upload-file">
+                <input type="file" multiple id="inputListFile" name="fileUpload[]">
                 <p>
                     Kéo thả file vào đây để upload
                 </p>
-                <button type="submit">Upload</button>
+
+                <ol id="list-file">
+                </ol>
+
+                <button type="button" id="btn-upload">Upload</button>
             </form>
         </div>
     </div>
@@ -67,10 +71,75 @@
     <script src="/js/mdb.min.js" th:src="@{/js/mdb.min.js}"></script>
 
     <script type="text/javascript">
+
+        function sendUploadServer(urlUpload, file) {
+            $.ajax({
+                headers: {
+                    "Content-Range": "bytes 0-31370/31371",
+                    "Content-Type": file.type,
+                    "X-Upload-Content-Length": file.size,
+                    "X-Upload-Content-Type": file.type
+                },
+                method: "put",
+                url: urlUpload,
+                data: file,
+                processData:false,
+                success: function (result) {
+                    console.log(result);
+                },
+                fail: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
         $(document).ready(function(){
-            $('form input').change(function () {
-                $('form p').text(this.files.length + " file(s) selected");
+            $('#form-upload-file #inputListFile').change(function () {
+                $('#form-upload-file p').text(this.files.length + " file(s) selected");
+
+                $('#list-file').empty();
+
+                var i;
+                for(i = 0; i < this.files.length; i++) {
+                    var node = document.createElement("li");                 // Create a <li> node
+                    var textnode = document.createTextNode(this.files.item(i).name);         // Create a text node
+                    node.appendChild(textnode);                              // Append the text to <li>
+                    $('#list-file').append(node);     // Append <li> to <ul> with id="myList"
+                }
             });
+
+            $('#btn-upload').click(function () {
+               var listFile = document.getElementById('inputListFile').files;
+
+               if (listFile.length > 5) {
+                   alert('Chỉ được phép upload 5 file');
+                   return;
+               }
+               var j;
+               for(j = 0; j < listFile.length; j++) {
+                   var fileItem = listFile.item(j);
+                   var dataReq = {
+                       "file_name" : fileItem.name,
+                       "file_size" : fileItem.size,
+                       "mime_type" : fileItem.type
+                   };
+
+                   $.ajax({
+                       headers: {
+                           "Content-Type": "application/json"
+                       },
+                       url: "http://localhost:8080/upload/check-hash",
+                       type: "post",
+                       dataType: "text",
+                       data: JSON.stringify(dataReq)
+                   }).done(function (result) {
+                       var dataJs = JSON.parse(result);
+                       var urlUpload = dataJs['url_upload'];
+                       sendUploadServer(urlUpload, fileItem);
+                   });
+               }
+            });
+
         });
     </script>
 </body>
