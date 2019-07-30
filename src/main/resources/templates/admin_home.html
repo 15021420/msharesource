@@ -78,6 +78,12 @@
                                 <label for="token">Key:</label>
                                 <input th:field="*{key}" th:value="${currentCredentials.getKey()}" type="text" class="form-control" id="key" placeholder="Enter Key" name="key" required>
                             </div>
+
+                            <div class="form-group">
+                                <label for="timeExpiredToken">Time expired token:</label>
+                                <input th:field="*{timeExpiredToken}" th:value="${currentCredentials.getTimeExpiredToken()}" type="text" class="form-control" id="timeExpiredToken"  name="timeExpiredToken" >
+                            </div>
+
                             <button type="submit" class="btn btn-primary text-center">Save Config setting</button>
                         </form>
                     </div>
@@ -103,6 +109,40 @@
             $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
                 $("#success-alert").slideUp(500);
             });
+
+            $("#loginGoogle").click(function(){
+
+                // this is the method which will be invoked it takes four parameters
+
+                // client id of the project
+
+                var clientId = "969423764561-30op4viitbict0kq3jkf2b8lnbdee7f5.apps.googleusercontent.com";
+
+                // redirect_uri of the project
+
+                var redirect_uri = window.location.href + "/google-login";
+
+                // scope of the project
+
+                var scope = "https://www.googleapis.com/auth/drive";
+
+                signIn(clientId,redirect_uri,scope);
+
+            });
+
+            function signIn(clientId,redirect_uri,scope){
+
+                // the actual url to which the user is redirected to
+
+                var url = "https://accounts.google.com/o/oauth2/v2/auth?redirect_uri="+redirect_uri
+                    +"&prompt=consent&response_type=code&client_id="+clientId+"&scope="+scope
+                    +"&access_type=offline";
+
+                // this line makes the user redirected to the url
+
+                window.location = url;
+            }
+
         });
     </script>
 </body>

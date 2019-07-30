@@ -22,13 +22,19 @@ public class GoogleDriveCredentials implements Serializable {
     @Column
     private String key;
 
-    public GoogleDriveCredentials() {}
+    @Column
+    private String timeExpiredToken;
 
-    public GoogleDriveCredentials(String authorizationCode, String refreshToken, String token, String key) {
+    public GoogleDriveCredentials() {
+
+    }
+
+    public GoogleDriveCredentials(String authorizationCode, String refreshToken, String token, String key, String timeExpiredToken) {
         this.authorizationCode = authorizationCode;
         this.refreshToken = refreshToken;
         this.token = token;
         this.key = key;
+        this.timeExpiredToken = timeExpiredToken;
     }
 
     public int getId() {
@@ -69,5 +75,13 @@ public class GoogleDriveCredentials implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getTimeExpiredToken() {
+        return timeExpiredToken;
+    }
+
+    public void setTimeExpiredToken(String timeExpiredToken) {
+        this.timeExpiredToken = timeExpiredToken;
     }
 }

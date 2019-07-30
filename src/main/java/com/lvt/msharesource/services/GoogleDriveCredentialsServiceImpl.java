@@ -32,4 +32,10 @@ public class GoogleDriveCredentialsServiceImpl implements GoogleDriveCredentials
             return null;
         return googleDriveCredentialsRepository.save(record);
     }
+
+    @Override
+    public String refreshTokenGoogle() {
+        
+        return null;
+    }
 }

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Google signIn process</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="wrapper">
+
+        <div class="d-flex justify-content-center">
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-secondary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-success" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-danger" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-warning" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-info" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-light" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function configCredentials(authCode, refreshTokenInput, token, timeExpired) {
+        $.ajax({
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            type: 'POST',
+            url: '/admin/save-config-credentials',
+            dataType: 'text',
+            data : JSON.stringify({
+                "authorizationCode" : authCode,
+                "refreshToken": refreshTokenInput,
+                "token": 'Bearer ' + token,
+                "timeExpiredToken": timeExpired
+            })
+        }).done(function (result) {
+            console.log(result);
+        });
+    }
+
+
+    $(document).ready(function() {
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var code = urlParams.get('code');
+
+        console.log(code);
+
+        var redirect_uri ="http://localhost:8080/admin/google-login" ;// replace with your redirect_uri;
+        var client_secret = "otQlcgubk0IQVqgT5PzfZXc6"; // replace with your client secret
+        var scope = "https://www.googleapis.com/auth/drive";
+        var client_id = "969423764561-30op4viitbict0kq3jkf2b8lnbdee7f5.apps.googleusercontent.com";// replace it with your client id;
+
+
+        $.ajax({
+            type: 'POST',
+            url: "https://www.googleapis.com/oauth2/v4/token",
+            data: {
+                code: code,
+                redirect_uri: redirect_uri,
+                client_secret: client_secret,
+                client_id: client_id,
+                scope: scope,
+                grant_type: "authorization_code",
+                accesss_type: "offline"
+            },
+            dataType: "json",
+            success: function (resultData) {
+
+                console.log(resultData);
+                configCredentials(code, resultData.refresh_token, resultData.access_token, resultData.expires_in)
+            }
+        });
+    });
+</script>
+</body>
+</html>

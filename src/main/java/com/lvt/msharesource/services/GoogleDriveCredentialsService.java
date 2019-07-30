@@ -8,4 +8,5 @@ public interface GoogleDriveCredentialsService {
      List<GoogleDriveCredentials> getListGoogleDriveCredentials();
      GoogleDriveCredentials insertGoogleDriveCredentials(GoogleDriveCredentials record);
      GoogleDriveCredentials updateGoogleDriveCredentials(GoogleDriveCredentials record);
+     String refreshTokenGoogle();
 }
